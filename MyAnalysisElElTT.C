@@ -105,7 +105,7 @@ void MyAnalysis::Begin(TTree * /*tree*/)
     histograms.push_back(h_num_out_noMET);
     histograms_MC.push_back(h_num_out_noMET);
 
-    h_pt_lepton_ALS = new TH1F("h_pt_lepton_ALS","pt of leptons",38,25,400);
+    h_pt_lepton_ALS = new TH1F("h_pt_lepton_ALS","pt of leptons",38,20,400);
     h_pt_lepton_ALS->Sumw2();
     histograms.push_back(h_pt_lepton_ALS);
     histograms_MC.push_back(h_pt_lepton_ALS);
@@ -224,8 +224,8 @@ Bool_t MyAnalysis::Process(Long64_t entry)
     BuildEvents();
     met_pt =  *(px_mets.begin()) + *(py_mets.begin());
     met_pt *=-1;
-    met_sum = *(sum_mets.begin());
-met_sum *= -1;
+    met_sum = *(pt_mets.begin());
+
 // cout << b_isData << endl;
     if(!b_isData)weight *= (*w_mc);
     if(MyLeptons.size() < 2) return kTRUE;
@@ -338,12 +338,13 @@ if(!b_isData){
     if(!b_isData){
     for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
     {
-        Int_t binx = h2D_btagEff->GetXaxis()->FindBin(it->Pt());
-        Int_t biny = h2D_btagEff->GetYaxis()->FindBin(fabs(it->Eta()));
+
         bEffCalc(it->Eta(),it->Pt(),MyJets);
-        if(applySF(it->GetJetBDis(0),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
+//        if(applySF((it->GetJetBDis() > 0.5426),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
     }
     }
+    BJets.clear();
+
     for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
     {
 
@@ -355,7 +356,7 @@ if(!b_isData){
         if(it->GetGenJet().Pt()>0) h_gen_Jets_pt->Fill(it->GetGenJet().Pt(),weight);
         h_Jets_eta->Fill(it->Eta(),weight);
         if(it->GetGenJet().Pt()>0) h_gen_Jets_eta->Fill(it->GetGenJet().Eta(),weight);
-        if(it->GetJetBDis(0))
+        if((it->GetJetBDis() > 0.5426))
         {
             BJets.push_back(*it);
         }
@@ -373,6 +374,15 @@ if(!b_isData){
     h_Nevents_AMS->Fill(1,weight);
 
     if(BJets.size() < 1) return kTRUE;
+    if(!b_isData){
+    for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
+    {
+        Int_t binx = h2D_btagEff->GetXaxis()->FindBin(it->Pt());
+        Int_t biny = h2D_btagEff->GetYaxis()->FindBin(fabs(it->Eta()));
+//        bEffCalc(it->Eta(),it->Pt(),MyJets);
+        if(applySF((it->GetJetBDis() > 0.5426),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
+    }
+    }
 	if(!b_isData) weight*=bweight;
     h_Nevents_ABS->Fill(1,weight);
     return kTRUE;
@@ -406,7 +416,7 @@ void MyAnalysis::BuildEvents()
     {
         MyJet jet = MyJet(pt_Jets[i],eta_Jets[i],phi_Jets[i],e_Jets[i]);
         jet.SetJetSF(sf_down_Jets[i],sf_nominal_Jets[i],sf_up_Jets[i]);
-        jet.SetJetBDis(Loose_Bdiscriminator->at(i),Medium_Bdiscriminator->at(i),Tight_Bdiscriminator->at(i));
+        jet.SetJetBDis(bdis_Jets[i]);
         jet.SetJetHadFlav(hadflav_Jets[i]);
         double jet_scalefactor    = reader.eval_auto_bounds(
                     "central",
@@ -425,24 +435,25 @@ void MyAnalysis::BuildEvents()
    
     
         MyLepton lep = MyLepton(pt_Leptons[j],eta_Leptons[j],phi_Leptons[j],e_Leptons[j]);
+        lep.SetLepSCeta(SuperClusterEta_Leptons[j]);
         if(!(pt_gen_Leptons.IsEmpty())) lep.SetGenLep(pt_gen_Leptons[j],eta_gen_Leptons[j],phi_gen_Leptons[j],e_gen_Leptons[j]);
         lep.SetGenLepDaughterId(id_gen_daughters[j]);
         lep.SetGenLepMotherId(id_gen_mothers[j]);
-        MyLeptonsD.push_back(lep);
+        MyLeptons.push_back(lep);
     }
 
-   for(int j=0; j< (int) MyLeptonsD.size();++j)
-    {
-		MyLeptonsD.at(j).SetLepSCeta(SuperClusterEta_Leptons[j]);
-        if(fabs(SuperClusterEta_Leptons[j]) <= 1.479){
-         if(!(d0_Leptons[j] < 0.05) && !(dz_Leptons[j] < 0.10) ) continue;
-        }
+//   for(int j=0; j< (int) MyLeptonsD.size();++j)
+//    {
+//		MyLeptonsD.at(j).SetLepSCeta(SuperClusterEta_Leptons[j]);
+//        if(fabs(SuperClusterEta_Leptons[j]) <= 1.479){
+//         if(!(d0_Leptons[j] < 0.05) && !(dz_Leptons[j] < 0.10) ) continue;
+//        }
 
-       if(fabs(SuperClusterEta_Leptons[j]) > 1.479 ){
-        if(!(d0_Leptons[j] < 0.10) && !(dz_Leptons[j] < 0.20) ) continue;
-          }
-		MyLeptons.push_back(MyLeptonsD.at(j));
-    }
+//       if(fabs(SuperClusterEta_Leptons[j]) > 1.479 ){
+//        if(!(d0_Leptons[j] < 0.10) && !(dz_Leptons[j] < 0.20) ) continue;
+//          }
+//		MyLeptons.push_back(MyLeptonsD.at(j));
+//    }
 
 }
 
@@ -453,8 +464,8 @@ void MyAnalysis::bEffCalc(double b_eta, double b_pt,vector<MyJet> jets)
     for(vector<MyJet>::iterator it = jets.begin(); it != jets.end();++it)
     {
 
-        if(it->GetHadFlav() == 5 && it->GetJetBDis(0))  h_btag_eff_num->Fill(b_pt,fabs(b_eta));
-        if(it->GetJetBDis(0)) h_btag_eff_den->Fill(b_pt,fabs(b_eta));
+        if(it->GetHadFlav() == 5 && (it->GetJetBDis() > 0.5426))  h_btag_eff_num->Fill(b_pt,fabs(b_eta));
+        if((it->GetHadFlav() == 5)) h_btag_eff_den->Fill(b_pt,fabs(b_eta));
 
     }
 

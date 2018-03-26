@@ -1,4 +1,4 @@
-#include "MyAnalysisElMuTTOther.h"
+#include "MyAnalysisElMuGHTTOther.h"
 #include "Plotter.h"
 #include <iostream>
 #include <TChain.h>
@@ -19,8 +19,8 @@ void MyThread(string str)
 
 int main(int argc, char *argv[]) {
 
-    
-    
+
+
     std::string str(argv[1]);
 
     TString s;
@@ -33,13 +33,16 @@ int main(int argc, char *argv[]) {
     {
         b_isData = false;
     }
-    MyAnalysis* b = new  MyAnalysis(0,b_isData);
+    std::string outFilename = str+"GHTTOther_tree.root";
+    MyAnalysis* b = new  MyAnalysis(0,b_isData,outFilename);
     TChain* ch2 = new TChain("tree");
     cout <<str <<endl;
     string chstr = str+"_histoGHTTOther.root";
     ch2->Add(str.c_str());
 
     ch2->Process(b);
+    TFile *mainf = TFile::Open(str.c_str());
+
     TFile* h_file =new TFile(chstr.c_str(),"RECREATE");
 
     h_file->cd();
@@ -52,16 +55,18 @@ int main(int argc, char *argv[]) {
     }
     b->h_btag_eff_num->Write();
     b->h_btag_eff_den->Write();
-    b->h_btag_eff_num->Divide(b->h_btag_eff_den);
-
+   // b->h_btag_eff_num->Divide(b->h_btag_eff_den);
+    TH1F* num_events = (TH1F*) mainf->Get("h_Nevents");
+     num_events->Write("num_events");
 
     b->h_btag_eff_num->Write("division");
 
     h_file->Close();
 
+    ch2->Delete();
+    b->Delete();
 
-
-	return 0;
+    return 0;
 
 
 }

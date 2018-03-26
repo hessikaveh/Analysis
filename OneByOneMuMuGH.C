@@ -33,7 +33,8 @@ int main(int argc, char *argv[]) {
     {
         b_isData = false;
     }
-    MyAnalysis* b = new  MyAnalysis(0,b_isData);
+    std::string outFilename = str+"GH_tree.root";
+    MyAnalysis* b = new  MyAnalysis(0,b_isData,outFilename);
     TChain* ch2 = new TChain("tree");
     cout <<str <<endl;
     string chstr = str+"_histoGH.root";
@@ -52,13 +53,14 @@ int main(int argc, char *argv[]) {
     }
     b->h_btag_eff_num->Write();
     b->h_btag_eff_den->Write();
-    b->h_btag_eff_num->Divide(b->h_btag_eff_den);
+   // b->h_btag_eff_num->Divide(b->h_btag_eff_den);
 
 
     b->h_btag_eff_num->Write("division");
 
     h_file->Close();
-
+    ch2->Delete();
+    b->Delete();
 
 
 	return 0;

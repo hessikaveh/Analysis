@@ -51,7 +51,7 @@ public:
         {
             return sf_up;
         }
-        return 1.;
+        return sf_nominal;
     };
 
     void SetJetHadFlav(int flavour)
@@ -63,27 +63,15 @@ public:
     {
         return had_flav;
     };
-    void SetJetBDis(bool loose, bool medium, bool tight)
+    void SetJetBDis(double bDiscriminator)
     {
-        b_loose = loose;
-        b_medium = medium;
-        b_tight = tight;
+       b_dis = bDiscriminator;
     };
-    bool GetJetBDis(int i)
+    double GetJetBDis()
     {
-        if(i==0)
-        {
-            return b_loose;
-        }
-        else if(i == 1)
-        {
-            return b_medium;
-        }
-        else if(i==2 )
-        {
-            return b_tight;
-        }
-        return 1.;
+
+            return b_dis;
+
     };
     void SetJetBSF(double BTagSF)
     {
@@ -93,6 +81,41 @@ public:
     {
         return b_sf;
     };
+
+    void SetJetBSFUP(double BTagSFUP)
+    {
+        b_sfup = BTagSFUP;
+    };
+    double GetJetBSFUP()
+    {
+        return b_sfup;
+    };
+
+    void SetJetBSFDOWN(double BTagSFDOWN)
+    {
+        b_sfdown = BTagSFDOWN;
+    };
+    double GetJetBSFDOWN()
+    {
+        return b_sfdown;
+    };
+
+    void SetJetPtRes(double Respt)
+    {
+        ptRes = Respt;
+    }
+    double GetJetPtRes()
+    {
+        return ptRes;
+    }
+    void SetJetPhiRes(double Resphi)
+    {
+        phiRes = Resphi;
+    }
+    double GetJetPhiRes()
+    {
+        return phiRes;
+    }
 
 private:
 
@@ -104,7 +127,13 @@ private:
     double sf_up;
     int had_flav;
     bool b_loose,b_medium,b_tight;
+    double b_dis;
     double b_sf;
+    double b_sfup;
+    double b_sfdown;
+
+    double ptRes;
+    double phiRes;
 
 
 };

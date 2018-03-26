@@ -213,8 +213,7 @@ Bool_t MyAnalysis::Process(Long64_t entry)
         cout << "Next event -----> " << TotalEvents << endl;
 //            if(TotalEvents > 100000) return kTRUE;
     BuildEvents();
-    met_pt =  *(px_mets.begin()) + *(py_mets.begin());
-    met_pt *=-1;
+     met_pt = *(pt_mets.begin());
 // cout << b_isData << endl;
     if(!b_isData)weight *= (*w_mc);
     if(MyLeptons.size() != 2) return kTRUE;
@@ -302,12 +301,13 @@ if(!b_isData){
     if(!b_isData){
     for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
     {
-        Int_t binx = h2D_btagEff->GetXaxis()->FindBin(it->Pt());
-        Int_t biny = h2D_btagEff->GetYaxis()->FindBin(fabs(it->Eta()));
+
         bEffCalc(it->Eta(),it->Pt(),MyJets);
-        if(applySF(it->GetJetBDis(0),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
+//        if(applySF((it->GetJetBDis() > 0.5426),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
     }
     }
+    BJets.clear();
+
     for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
     {
 
@@ -319,7 +319,7 @@ if(!b_isData){
         if(it->GetGenJet().Pt()>0) h_gen_Jets_pt->Fill(it->GetGenJet().Pt(),weight);
         h_Jets_eta->Fill(it->Eta(),weight);
         if(it->GetGenJet().Pt()>0) h_gen_Jets_eta->Fill(it->GetGenJet().Eta(),weight);
-        if(it->GetJetBDis(0))
+        if((it->GetJetBDis() > 0.5426))
         {
             BJets.push_back(*it);
         }
@@ -337,6 +337,15 @@ if(!b_isData){
     h_Nevents_AMS->Fill(1,weight);
 
     if(BJets.size() < 1) return kTRUE;
+    if(!b_isData){
+    for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
+    {
+        Int_t binx = h2D_btagEff->GetXaxis()->FindBin(it->Pt());
+        Int_t biny = h2D_btagEff->GetYaxis()->FindBin(fabs(it->Eta()));
+//        bEffCalc(it->Eta(),it->Pt(),MyJets);
+        if(applySF((it->GetJetBDis() > 0.5426),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
+    }
+    }
 	if(!b_isData) weight*=bweight;
     h_Nevents_ABS->Fill(1,weight);
     return kTRUE;
@@ -369,7 +378,7 @@ void MyAnalysis::BuildEvents()
     {
         MyJet jet = MyJet(pt_Jets[i],eta_Jets[i],phi_Jets[i],e_Jets[i]);
         jet.SetJetSF(sf_down_Jets[i],sf_nominal_Jets[i],sf_up_Jets[i]);
-        jet.SetJetBDis(Loose_Bdiscriminator->at(i),Medium_Bdiscriminator->at(i),Tight_Bdiscriminator->at(i));
+        jet.SetJetBDis(bdis_Jets[i]);
         jet.SetJetHadFlav(hadflav_Jets[i]);
         double jet_scalefactor    = reader.eval_auto_bounds(
                     "central",
@@ -401,8 +410,8 @@ void MyAnalysis::bEffCalc(double b_eta, double b_pt,vector<MyJet> jets)
     for(vector<MyJet>::iterator it = jets.begin(); it != jets.end();++it)
     {
 
-        if(it->GetHadFlav() == 5 && it->GetJetBDis(0))  h_btag_eff_num->Fill(b_pt,fabs(b_eta));
-        if(it->GetJetBDis(0)) h_btag_eff_den->Fill(b_pt,fabs(b_eta));
+        if(it->GetHadFlav() == 5 && (it->GetJetBDis() > 0.5426))  h_btag_eff_num->Fill(b_pt,fabs(b_eta));
+        if((it->GetHadFlav() == 5)) h_btag_eff_den->Fill(b_pt,fabs(b_eta));
 
     }
 

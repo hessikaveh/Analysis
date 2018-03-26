@@ -52,6 +52,33 @@ public:
     {
         return gen_lep;
     }
+    void SetGenLepM(double gen_pt,double gen_eta,double gen_phi,double gen_e)
+    {
+        genm_lep.SetPtEtaPhiE(gen_pt,gen_eta,gen_phi,gen_e);
+    }
+
+    TLorentzVector GetGenLepM()
+    {
+        return genm_lep;
+    }
+    void SetGenLepMM(double gen_pt,double gen_eta,double gen_phi,double gen_e)
+    {
+        genmm_lep.SetPtEtaPhiE(gen_pt,gen_eta,gen_phi,gen_e);
+    }
+
+    TLorentzVector GetGenLepMM()
+    {
+        return genmm_lep;
+    }
+
+    void SetGenId(int id)
+    {
+        id_gen = id;
+    }
+    int  GetGenId()
+    {
+        return id_gen;
+    }
     void SetGenLepMotherId(int id)
     {
         id_gen_mother = id;
@@ -105,8 +132,12 @@ private:
     double isolation;
     int charge;
     TLorentzVector gen_lep;
+    TLorentzVector genm_lep;
+    TLorentzVector genmm_lep;
+
     int id_gen_daughter;
     int id_gen_mother;
+    int id_gen;
     double eta_SC;
     double d0;
     double dZ;

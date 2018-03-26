@@ -80,10 +80,35 @@ void MyAnalysis::Begin(TTree * /*tree*/)
     histograms.push_back(h_m_dilepton_ALS_NoVeto);
     histograms_MC.push_back(h_m_dilepton_ALS_NoVeto);
 
+    h_m_dilepton_A1BS = new TH1F("h_m_dilepton_A1BS","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_A1BS->Sumw2();
+    histograms.push_back(h_m_dilepton_A1BS);
+    histograms_MC.push_back(h_m_dilepton_A1BS);
+
+    h_m_dilepton_A2BS = new TH1F("h_m_dilepton_A2BS","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_A2BS->Sumw2();
+    histograms.push_back(h_m_dilepton_A2BS);
+    histograms_MC.push_back(h_m_dilepton_A2BS);
+
     h_num_jets_ALS_NoVeto = new TH1F("h_num_jets_ALS_NoVeto","Number of Jets",9,0,9);
-    h_m_dilepton_ALS_NoVeto->Sumw2();
+    h_num_jets_ALS_NoVeto->Sumw2();
     histograms.push_back(h_num_jets_ALS_NoVeto);
     histograms_MC.push_back(h_num_jets_ALS_NoVeto);
+
+    h_num_jets_A2JMS = new TH1F("h_num_jets_A2JMS","Number of Jets",9,0,9);
+    h_num_jets_A2JMS->Sumw2();
+    histograms.push_back(h_num_jets_A2JMS);
+    histograms_MC.push_back(h_num_jets_A2JMS);
+
+    h_num_bjets_A1BS = new TH1F("h_num_bjets_A1BS","Number of Jets",9,0,9);
+    h_num_bjets_A1BS->Sumw2();
+    histograms.push_back(h_num_bjets_A1BS);
+    histograms_MC.push_back(h_num_bjets_A1BS);
+
+    h_num_bjets_A2BS = new TH1F("h_num_bjets_A2BS","Number of Jets",9,0,9);
+    h_num_bjets_A2BS->Sumw2();
+    histograms.push_back(h_num_bjets_A2BS);
+    histograms_MC.push_back(h_num_bjets_A2BS);
 
     h_num_in_MET = new TH1F("h_num_in_MET","",1,0,2);
     h_num_in_MET->Sumw2();
@@ -105,15 +130,101 @@ void MyAnalysis::Begin(TTree * /*tree*/)
     histograms.push_back(h_num_out_noMET);
     histograms_MC.push_back(h_num_out_noMET);
 
-    h_pt_lepton_ALS = new TH1F("h_pt_lepton_ALS","pt of leptons",38,25,400);
+    h_num_in_A1BS_MET = new TH1F("h_num_in_A1BS_MET","",1,0,2);
+    h_num_in_A1BS_MET->Sumw2();
+    histograms.push_back(h_num_in_A1BS_MET);
+    histograms_MC.push_back(h_num_in_A1BS_MET);
+
+    h_num_in_A1BS_noMET = new TH1F("h_num_in_A1BS_noMET","",1,0,2);
+    h_num_in_A1BS_noMET->Sumw2();
+    histograms.push_back(h_num_in_A1BS_noMET);
+    histograms_MC.push_back(h_num_in_A1BS_noMET);
+
+    h_num_out_A1BS_MET = new TH1F("h_num_out_A1BS_MET","",1,0,2);
+    h_num_out_A1BS_MET->Sumw2();
+    histograms.push_back(h_num_out_A1BS_MET);
+    histograms_MC.push_back(h_num_out_A1BS_MET);
+
+    h_num_out_A1BS_noMET = new TH1F("h_num_out_A1BS_noMET","",1,0,2);
+    h_num_out_A1BS_noMET->Sumw2();
+    histograms.push_back(h_num_out_A1BS_noMET);
+    histograms_MC.push_back(h_num_out_A1BS_noMET);
+
+    h_num_in_A2BS_MET = new TH1F("h_num_in_A2BS_MET","",1,0,2);
+    h_num_in_A2BS_MET->Sumw2();
+    histograms.push_back(h_num_in_A2BS_MET);
+    histograms_MC.push_back(h_num_in_A2BS_MET);
+
+    h_num_in_A2BS_noMET = new TH1F("h_num_in_A2BS_noMET","",1,0,2);
+    h_num_in_A2BS_noMET->Sumw2();
+    histograms.push_back(h_num_in_A2BS_noMET);
+    histograms_MC.push_back(h_num_in_A2BS_noMET);
+
+    h_num_out_A2BS_MET = new TH1F("h_num_out_A2BS_MET","",1,0,2);
+    h_num_out_A2BS_MET->Sumw2();
+    histograms.push_back(h_num_out_A2BS_MET);
+    histograms_MC.push_back(h_num_out_A2BS_MET);
+
+    h_num_out_A2BS_noMET = new TH1F("h_num_out_A2BS_noMET","",1,0,2);
+    h_num_out_A2BS_noMET->Sumw2();
+    histograms.push_back(h_num_out_A2BS_noMET);
+    histograms_MC.push_back(h_num_out_A2BS_noMET);
+
+
+    h_pt_lepton_ALS = new TH1F("h_pt_lepton_ALS","pt of leptons",38,20,400);
     h_pt_lepton_ALS->Sumw2();
     histograms.push_back(h_pt_lepton_ALS);
     histograms_MC.push_back(h_pt_lepton_ALS);
+
+    h_pt_lepton_A2JMS = new TH1F("h_pt_lepton_A2JMS","pt of leptons",38,20,400);
+    h_pt_lepton_A2JMS->Sumw2();
+    histograms.push_back(h_pt_lepton_A2JMS);
+    histograms_MC.push_back(h_pt_lepton_A2JMS);
+
+    h_eta_lepton_A2JMS = new TH1F("h_eta_lepton_A2JMS","eta of leptons",38,-3,3);
+    h_eta_lepton_A2JMS->Sumw2();
+    histograms.push_back(h_eta_lepton_A2JMS);
+    histograms_MC.push_back(h_eta_lepton_A2JMS);
+
+    h_eta_muon_A2JMS = new TH1F("h_eta_muon_A2JMS","eta of muons",38,-3,3);
+    h_eta_muon_A2JMS->Sumw2();
+    histograms.push_back(h_eta_muon_A2JMS);
+    histograms_MC.push_back(h_eta_muon_A2JMS);
+
+    h_eta_electron_A2JMS = new TH1F("h_eta_electron_A2JMS","eta of electrons",38,-3,3);
+    h_eta_electron_A2JMS->Sumw2();
+    histograms.push_back(h_eta_electron_A2JMS);
+    histograms_MC.push_back(h_eta_electron_A2JMS);
+
+    h_pt_muon_A2JMS = new TH1F("h_pt_muon_A2JMS","pt of leptons",38,20,400);
+    h_pt_muon_A2JMS->Sumw2();
+    histograms.push_back(h_pt_muon_A2JMS);
+    histograms_MC.push_back(h_pt_muon_A2JMS);
+
+    h_pt_electron_A2JMS = new TH1F("h_pt_electron_A2JMS","pt of leptons",38,20,400);
+    h_pt_electron_A2JMS->Sumw2();
+    histograms.push_back(h_pt_electron_A2JMS);
+    histograms_MC.push_back(h_pt_electron_A2JMS);
+
+    h_pt_jets_A2JMS = new TH1F("h_pt_jets_A2JMS","pt of leptons",35,0,300);
+    h_pt_jets_A2JMS->Sumw2();
+    histograms.push_back(h_pt_jets_A2JMS);
+    histograms_MC.push_back(h_pt_jets_A2JMS);
 
     h_MET_ALS = new TH1F("h_MET_ALS","MET",30,0,300);
     h_MET_ALS->Sumw2();
     histograms.push_back(h_MET_ALS);
     histograms_MC.push_back(h_MET_ALS);
+
+    h_MET_A1BS = new TH1F("h_MET_A1BS","MET",30,0,300);
+    h_MET_A1BS->Sumw2();
+    histograms.push_back(h_MET_A1BS);
+    histograms_MC.push_back(h_MET_A1BS);
+
+    h_MET_A2BS = new TH1F("h_MET_A2BS","MET",30,0,300);
+    h_MET_A2BS->Sumw2();
+    histograms.push_back(h_MET_A2BS);
+    histograms_MC.push_back(h_MET_A2BS);
 
     h_MET_sum_ALS = new TH1F("h_MET_sum_ALS","MET_sum",30,0,300);
     h_MET_sum_ALS->Sumw2();
@@ -161,6 +272,122 @@ void MyAnalysis::Begin(TTree * /*tree*/)
     h_btag_eff_den = new TH2F("h_btag_eff_den","b-tagging eff den",50,30,500,5,0,2.5);
     h_btag_eff_den->Sumw2();
 
+    h_Nevents_A2BS = new TH1F("h_Nevents_A2BS","Number of Events A2BS",1,0,2);
+    h_Nevents_A2BS->Sumw2();
+    histograms.push_back(h_Nevents_A2BS);
+    histograms_MC.push_back(h_Nevents_A2BS);
+
+    h_Nevents_ATS = new TH1F("h_Nevents_ATS","Number of Events ATS",1,0,2);
+    h_Nevents_ATS->Sumw2();
+    histograms.push_back(h_Nevents_ATS);
+    histograms_MC.push_back(h_Nevents_ATS);
+
+    h_pt_top_ATS = new TH1F("h_pt_top_ATS","pt of top",38,0,800);
+    h_pt_top_ATS->Sumw2();
+    histograms.push_back(h_pt_top_ATS);
+    histograms_MC.push_back(h_pt_top_ATS);
+
+    h_pt_atop_ATS = new TH1F("h_pt_atop_ATS","pt of anti top",38,0,800);
+    h_pt_atop_ATS->Sumw2();
+    histograms.push_back(h_pt_atop_ATS);
+    histograms_MC.push_back(h_pt_atop_ATS);
+
+    h_pt_W_ATS = new TH1F("h_pt_W_ATS","pt of W",38,0,800);
+    h_pt_W_ATS->Sumw2();
+    histograms.push_back(h_pt_W_ATS);
+    histograms_MC.push_back(h_pt_W_ATS);
+
+    h_pt_aW_ATS = new TH1F("h_pt_aW_ATS","pt of aW",38,0,800);
+    h_pt_aW_ATS->Sumw2();
+    histograms.push_back(h_pt_aW_ATS);
+    histograms_MC.push_back(h_pt_aW_ATS);
+
+    h_pt_nu_ATS = new TH1F("h_pt_nu_ATS","pt of nu",38,0,800);
+    h_pt_nu_ATS->Sumw2();
+    histograms.push_back(h_pt_nu_ATS);
+    histograms_MC.push_back(h_pt_nu_ATS);
+
+    h_pt_anu_ATS = new TH1F("h_pt_anu_ATS","pt of anu",38,0,800);
+    h_pt_anu_ATS->Sumw2();
+    histograms.push_back(h_pt_anu_ATS);
+    histograms_MC.push_back(h_pt_anu_ATS);
+
+    h_eta_top_ATS = new TH1F("h_eta_top_ATS","eta of top",30,-3,3);
+    h_eta_top_ATS->Sumw2();
+    histograms.push_back(h_eta_top_ATS);
+    histograms_MC.push_back(h_eta_top_ATS);
+
+    h_eta_atop_ATS = new TH1F("h_eta_atop_ATS","eta of atop",30,-3,3);
+    h_eta_atop_ATS->Sumw2();
+    histograms.push_back(h_eta_atop_ATS);
+    histograms_MC.push_back(h_eta_atop_ATS);
+
+    h_y_top_ATS = new TH1F("h_y_top_ATS","y of top",30,-2.5,2.5);
+    h_y_top_ATS->Sumw2();
+    histograms.push_back(h_y_top_ATS);
+    histograms_MC.push_back(h_y_top_ATS);
+
+    h_y_atop_ATS = new TH1F("h_y_atop_ATS","y of atop",30,-2.5,2.5);
+    h_y_atop_ATS->Sumw2();
+    histograms.push_back(h_y_atop_ATS);
+    histograms_MC.push_back(h_y_atop_ATS);
+
+    h_eta_W_ATS = new TH1F("h_eta_W_ATS","eta of W",30,-3,3);
+    h_eta_W_ATS->Sumw2();
+    histograms.push_back(h_eta_W_ATS);
+    histograms_MC.push_back(h_eta_W_ATS);
+
+    h_eta_aW_ATS = new TH1F("h_eta_aW_ATS","eta of aW",30,-3,3);
+    h_eta_aW_ATS->Sumw2();
+    histograms.push_back(h_eta_aW_ATS);
+    histograms_MC.push_back(h_eta_aW_ATS);
+
+    h_cos = new TH1F("h_cos","cos",30,-1.1,1.1);
+    h_cos->Sumw2();
+    histograms.push_back(h_cos);
+    histograms_MC.push_back(h_cos);
+
+
+
+    h_y_tt_ATS = new TH1F("h_y_tt_ATS","y of tt",30,-2.5,2.5);
+    h_y_tt_ATS->Sumw2();
+    histograms.push_back(h_y_tt_ATS);
+    histograms_MC.push_back(h_y_tt_ATS);
+
+    h_pt_tt_ATS = new TH1F("h_pt_tt_ATS","pt of tt",38,0,500);
+    h_pt_tt_ATS->Sumw2();
+    histograms.push_back(h_pt_tt_ATS);
+    histograms_MC.push_back(h_pt_tt_ATS);
+
+    h_m_tt_ATS = new TH1F("h_m_tt_ATS","m of tt",38,200,2000);
+    h_m_tt_ATS->Sumw2();
+    histograms.push_back(h_m_tt_ATS);
+    histograms_MC.push_back(h_m_tt_ATS);
+
+
+    outFile = new TFile(filename.c_str(),"RECREATE");
+    outTree = new TTree("tree","");
+    outTree->Branch("pt_bJets","vector<double>",&t_bJets_pt);
+    outTree->Branch("eta_bJets","vector<double>",&t_bJets_eta);
+    outTree->Branch("phi_bJets","vector<double>",&t_bJets_phi);
+    outTree->Branch("e_bJets","vector<double>",&t_bJets_e);
+    outTree->Branch("ptRes_bJets","vector<double>",&t_bJets_ptRes);
+    outTree->Branch("phiRes_bJets","vector<double>",&t_bJets_phiRes);
+    outTree->Branch("sf_bJets","vector<double>",&t_bJets_sf);
+    outTree->Branch("sfup_bJets","vector<double>",&t_bJets_sfup);
+    outTree->Branch("sfdown_bJets","vector<double>",&t_bJets_sfdown);
+    outTree->Branch("pt_Leptons","vector<double>",&t_Leptons_pt);
+    outTree->Branch("eta_Leptons","vector<double>",&t_Leptons_eta);
+    outTree->Branch("phi_Leptons","vector<double>",&t_Leptons_phi);
+    outTree->Branch("e_Leptons","vector<double>",&t_Leptons_e);
+    outTree->Branch("charge_Leptons","vector<int>",&t_Leptons_charge);
+    outTree->Branch("weight",&t_weight);
+    outTree->Branch("b_weight",&t_b_weight);
+    outTree->Branch("lep_weight",&t_lepton_weight);
+
+    outTree->Branch("px_mets","vector<double>",&t_Met_px);
+    outTree->Branch("py_mets","vector<double>",&t_Met_py);
+
     BTagCalibration calib("csvv2", btagSf);
     reader = BTagCalibrationReader(BTagEntry::OP_LOOSE,  // operating point
                                    "central",             // central sys type
@@ -185,6 +412,8 @@ void MyAnalysis::Begin(TTree * /*tree*/)
         f_ee_sf = new TFile(ee_sf.c_str());
 
 }
+    jerSF = new JME::JetResolutionScaleFactor(sfResData);
+
     TString option = GetOption();
 }
 
@@ -224,16 +453,39 @@ Bool_t MyAnalysis::Process(Long64_t entry)
     BuildEvents();
     met_pt =  *(px_mets.begin()) + *(py_mets.begin());
     met_pt *=-1;
-    met_sum = *(sum_mets.begin());
-    met_sum *= -1;
+
+    met_sum = *(pt_mets.begin());
+    met_pt = *(pt_mets.begin());
 // cout << b_isData << endl;
     if(!b_isData)weight *= (*w_mc);
-    if(MyLeptons.size() < 2) return kTRUE;
+    if(MyLeptons.size() != 2) return kTRUE;
     MyLepton lep1 = MyLeptons.at(0);
     MyLepton lep2 = MyLeptons.at(1);
     
 
     h_Nevents->Fill(1);
+    t_Leptons_pt.clear();
+    t_Leptons_eta.clear();
+    t_Leptons_phi.clear();
+    t_Leptons_e.clear();
+    t_Leptons_charge.clear();
+    t_bJets_pt.clear();
+    t_bJets_eta.clear();
+    t_bJets_phi.clear();
+    t_bJets_e.clear();
+    t_bJets_ptRes.clear();
+    t_bJets_phiRes.clear();
+    t_bJets_sf.clear();
+    t_bJets_sfdown.clear();
+    t_bJets_sfup.clear();
+    t_weight = -9999;
+    t_b_weight = -9999;
+    t_lepton_weight = -9999;
+    t_Met_px.clear();
+    t_Met_py.clear();
+
+    t_Met_px.push_back(*(px_mets.begin()));
+    t_Met_py.push_back(*(py_mets.begin()));
 
 
     if(MyLeptons.at(0).Pt() > MyLeptons.at(1).Pt())
@@ -263,8 +515,7 @@ if(!b_isData){
     TH2F* h2D_egammaSF = (TH2F*) f_egammaSF->Get("EGamma_SF2D");
     TH2F* h2D_egammaTkSF = (TH2F*) f_egammaTkSF->Get("EGamma_SF2D");
 
-    for(vector<MyLepton>::iterator it = MyLeptons.begin(); it != MyLeptons.end();++it)
-    {
+
 //        Int_t binx = h2D_muonIDSF->GetXaxis()->FindBin(fabs(it->Eta()));
 //        Int_t biny = h2D_muonIDSF->GetYaxis()->FindBin(it->Pt());
 //        Int_t binx2 = h2D_muonISOSF->GetXaxis()->FindBin(fabs(it->Eta()));
@@ -276,16 +527,23 @@ if(!b_isData){
 //        double SF_posMu = h2D_muonIDSF->GetBinContent(binx,biny)*h2D_muonISOSF->GetBinContent(binx2,biny2)*TkSF;
 //        weight *= SF_posMu;
 
-        Int_t binx = h2D_egammaSF->GetXaxis()->FindBin(it->GetLepSCeta());
-        Int_t biny = h2D_egammaSF->GetYaxis()->FindBin(it->Pt());
-        Int_t binx2 = h2D_egammaTkSF->GetXaxis()->FindBin(it->GetLepSCeta());
+        Int_t binx = h2D_egammaSF->GetXaxis()->FindBin(lep1.GetLepSCeta());
+        Int_t biny = h2D_egammaSF->GetYaxis()->FindBin(lep1.Pt());
+        Int_t binx2 = h2D_egammaTkSF->GetXaxis()->FindBin(lep1.GetLepSCeta());
         Int_t biny2 = 1;
         double SF_posEl = h2D_egammaSF->GetBinContent(binx,biny)*h2D_egammaTkSF->GetBinContent(binx2,biny2);
 
         weight *= SF_posEl;
 
+        Int_t binx1 = h2D_egammaSF->GetXaxis()->FindBin(lep2.GetLepSCeta());
+        Int_t biny1 = h2D_egammaSF->GetYaxis()->FindBin(lep2.Pt());
+        Int_t binx21 = h2D_egammaTkSF->GetXaxis()->FindBin(lep2.GetLepSCeta());
+        Int_t biny21 = 1;
+        double SF_posEl1 = h2D_egammaSF->GetBinContent(binx1,biny1)*h2D_egammaTkSF->GetBinContent(binx21,biny21);
 
-    }
+        weight *= SF_posEl1;
+
+
 //    Int_t binx = h2D_mm_sf->GetXaxis()->FindBin(fabs(MyLeptons.at(0).Eta()));
 //    Int_t biny = h2D_mm_sf->GetYaxis()->FindBin(fabs(MyLeptons.at(1).Eta()));
 //    double d_mm_sf = h2D_mm_sf->GetBinContent(binx,biny);
@@ -293,55 +551,22 @@ if(!b_isData){
 
     TH2F* h2D_ee_sf = (TH2F*) f_ee_sf->Get("scalefactor_eta2d_with_syst");
 
-    Int_t binx = h2D_ee_sf->GetXaxis()->FindBin(fabs(lep1.Eta()));
-    Int_t biny = h2D_ee_sf->GetYaxis()->FindBin(fabs(lep2.Eta()));
+    Int_t binxx = h2D_ee_sf->GetXaxis()->FindBin(fabs(lep1.Eta()));
+    Int_t binyy = h2D_ee_sf->GetYaxis()->FindBin(fabs(lep2.Eta()));
 
-    double d_ee_sf = h2D_ee_sf->GetBinContent(binx,biny);
+    double d_ee_sf = h2D_ee_sf->GetBinContent(binxx,binyy);
     //            cout << posEl.eta() << " ee " << negEl.eta() << " sf " << d_ee_sf << endl;
     weight *= d_ee_sf;
 
 
 }
+t_lepton_weight = weight;
+
     //if(!b_isData) weight *= (*w_trigger_ee) * (*w_trigger_em) *(*w_trigger_mm)*(*w_posEl)*(*w_negEl)*(*w_posMu)*(*w_negMu);
     h_m_dilepton_ALS_NoVeto->Fill(m_dilepton,weight);
     h_num_jets_ALS_NoVeto->Fill(MyJets.size(),weight);
-    if(m_dilepton >= 76 && m_dilepton <= 106)
-    {
-        if(MyJets.size() >= 2 )
-        {
-            h_num_in_noMET->Fill(1,weight);
-            if(met_pt >= 40) h_num_in_MET->Fill(1,weight);
-        }
-    }
-    if(m_dilepton >= 76 && m_dilepton <= 106) return kTRUE;
-    h_Nevents_ALS->Fill(1,weight);
-    if(MyJets.size() >= 2 )
-    {
-        h_num_out_noMET->Fill(1,weight);
-        if(met_sum > 40) h_num_out_MET->Fill(1,weight);
-    }
-
-    for(vector<MyLepton>::iterator it = MyLeptons.begin(); it != MyLeptons.end();++it)
-    {
-		h_pt_lepton_ALS->Fill(it->Pt(),weight);
-        h_Leptons_pt->Fill(it->Pt(),weight);
-    }
-    h_MET_sum_ALS->Fill(met_sum,weight);
-    h_MET_ALS->Fill(met_pt,weight);
-    if(MyJets.size()<2) return kTRUE;
+    BJets.clear();
     double w_jet = 1;
-
-    double bweight=1.;
-    TH2F* h2D_btagEff = (TH2F*) f_btagEff->Get("division");
-    if(!b_isData){
-    for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
-    {
-        Int_t binx = h2D_btagEff->GetXaxis()->FindBin(it->Pt());
-        Int_t biny = h2D_btagEff->GetYaxis()->FindBin(fabs(it->Eta()));
-        bEffCalc(it->Eta(),it->Pt(),MyJets);
-        if(applySF(it->GetJetBDis(0),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
-    }
-    }
     for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
     {
 
@@ -353,14 +578,84 @@ if(!b_isData){
         if(it->GetGenJet().Pt()>0) h_gen_Jets_pt->Fill(it->GetGenJet().Pt(),weight);
         h_Jets_eta->Fill(it->Eta(),weight);
         if(it->GetGenJet().Pt()>0) h_gen_Jets_eta->Fill(it->GetGenJet().Eta(),weight);
-        if(it->GetJetBDis(0))
+        if((it->GetJetBDis() > 0.5426))
         {
             BJets.push_back(*it);
+            t_bJets_pt.push_back(it->Pt());
+            t_bJets_eta.push_back( it->Eta());
+            t_bJets_phi.push_back( it->Phi());
+            t_bJets_e.push_back( it->E());
+            t_bJets_ptRes.push_back( it->GetJetPtRes());
+            t_bJets_phiRes.push_back( it->GetJetPhiRes());
+            t_bJets_sf.push_back( jerSF->getScaleFactor({{JME::Binning::JetEta, it->Eta()}},Variation::NOMINAL));
+            t_bJets_sfup.push_back( jerSF->getScaleFactor({{JME::Binning::JetEta, it->Eta()}},Variation::UP));
+            t_bJets_sfdown.push_back( jerSF->getScaleFactor({{JME::Binning::JetEta, it->Eta()}},Variation::DOWN));
+
+
+
+
         }
 
 
     }
-    //    h_btag_eff->SetBinContent(h_btag_eff->FindBin(5),h_btag_eff->FindBin(fabs(.2)),N_btagged_b/N_btagged_total);
+
+
+    if(m_dilepton > 76 && m_dilepton < 106)
+    {
+        if(MyJets.size() >= 2 )
+        {
+            h_num_in_noMET->Fill(1,weight);
+            if(met_pt > 40) h_num_in_MET->Fill(1,weight);
+        }
+        if(BJets.size() >= 1 )
+        {
+            h_num_in_A1BS_noMET->Fill(1,weight);
+            if(met_pt > 40) h_num_in_A1BS_MET->Fill(1,weight);
+        }
+        if(BJets.size() >= 2 )
+        {
+            h_num_in_A2BS_noMET->Fill(1,weight);
+            if(met_pt > 40) h_num_in_A2BS_MET->Fill(1,weight);
+        }
+    }
+    if(m_dilepton >= 76 && m_dilepton <= 106) return kTRUE;
+    h_Nevents_ALS->Fill(1,weight);
+    if(MyJets.size() >= 2 )
+    {
+        h_num_out_noMET->Fill(1,weight);
+        if(met_sum > 40) h_num_out_MET->Fill(1,weight);
+    }
+    if(BJets.size() >= 1 )
+    {
+        h_num_out_A1BS_noMET->Fill(1,weight);
+        if(met_pt > 40) h_num_out_A1BS_MET->Fill(1,weight);
+    }
+    if(BJets.size() >= 2 )
+    {
+        h_num_out_A2BS_noMET->Fill(1,weight);
+        if(met_pt > 40) h_num_out_A2BS_MET->Fill(1,weight);
+    }
+
+    for(vector<MyLepton>::iterator it = MyLeptons.begin(); it != MyLeptons.end();++it)
+    {
+        h_pt_lepton_ALS->Fill(it->Pt(),weight);
+        h_Leptons_pt->Fill(it->Pt(),weight);
+    }
+    h_MET_sum_ALS->Fill(met_sum,weight);
+    h_MET_ALS->Fill(met_pt,weight);
+    if(MyJets.size()<2) return kTRUE;
+
+
+    double bweight=1.;
+    TH2F* h2D_btagEff = (TH2F*) f_btagEff->Get("division");
+    if(!b_isData){
+    for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
+    {
+
+        bEffCalc(it->Eta(),it->Pt(),MyJets);
+//        if(applySF((it->GetJetBDis() > 0.5426),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
+    }
+    }
 
     h_Nevents_AJS->Fill(1,weight);
 
@@ -370,9 +665,114 @@ if(!b_isData){
     if(met_sum <= 40) return kTRUE;
     h_Nevents_AMS->Fill(1,weight);
 
+    for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
+    {
+        h_pt_jets_A2JMS->Fill(it->Pt(),weight);
+    }
+    h_num_jets_A2JMS->Fill(MyJets.size(),weight);
+
+    for(vector<MyLepton>::iterator it = MyLeptons.begin(); it != MyLeptons.end();++it)
+    {
+
+        h_pt_lepton_A2JMS->Fill(it->Pt(),weight);
+        h_eta_lepton_A2JMS->Fill(it->Eta(),weight);
+
+        if(it->GetLepType() == "muon")
+        {
+            h_pt_muon_A2JMS->Fill(it->Pt(),weight);
+            h_eta_muon_A2JMS->Fill(it->Eta(),weight);
+        }
+        if(it->GetLepType() == "electron")
+        {
+            h_pt_electron_A2JMS->Fill(it->Pt(),weight);
+            h_eta_electron_A2JMS->Fill(it->Eta(),weight);
+        }
+
+    }
     if(BJets.size() < 1) return kTRUE;
-	if(!b_isData) weight*=bweight;
+    if(!b_isData){
+        for(vector<MyJet>::iterator it = MyJets.begin(); it != MyJets.end();++it)
+        {
+            Int_t binx = h2D_btagEff->GetXaxis()->FindBin(it->Pt());
+            Int_t biny = h2D_btagEff->GetYaxis()->FindBin(fabs(it->Eta()));
+            //        bEffCalc(it->Eta(),it->Pt(),MyJets);
+            if(applySF((it->GetJetBDis() > 0.5426),it->GetJetBSF(),h2D_btagEff->GetBinContent(binx,biny))) bweight*= it->GetJetBSF();
+        }
+    }
+    if(!b_isData) weight*=bweight;
+    h_MET_A1BS->Fill(met_pt,weight);
+    h_num_bjets_A1BS->Fill(BJets.size(),weight);
+    h_m_dilepton_A1BS->Fill((lep1+lep2).M(),weight);
+
     h_Nevents_ABS->Fill(1,weight);
+
+    if(BJets.size() < 2) return kTRUE;
+    h_Nevents_A2BS->Fill(1,weight);
+    h_MET_A2BS->Fill(met_pt,weight);
+    h_num_bjets_A2BS->Fill(BJets.size(),weight);
+    h_m_dilepton_A2BS->Fill((lep1+lep2).M(),weight);
+
+    t_Leptons_pt.push_back(lep1.Pt());
+    t_Leptons_eta.push_back(lep1.Eta());
+    t_Leptons_phi.push_back(lep1.Phi());
+    t_Leptons_e.push_back(lep1.E());
+    t_Leptons_charge.push_back(lep1.GetCharge());
+    t_Leptons_pt.push_back(lep2.Pt());
+    t_Leptons_eta.push_back(lep2.Eta());
+    t_Leptons_phi.push_back(lep2.Phi());
+    t_Leptons_e.push_back(lep2.E());
+    t_Leptons_charge.push_back(lep2.GetCharge());
+
+    t_weight = weight;
+    t_b_weight = bweight;
+
+
+    outTree->Fill();
+
+
+
+    if((Mytop.size() + Myatop.size()) > 0)
+    {
+        for(int i=0;i < (int) cos.GetSize();++i)
+        {
+            h_cos->Fill(cos[i],weight);
+        }
+        h_Nevents_ATS->Fill(1,weight);
+        for(vector<MyLepton>::iterator it = Mytop.begin(); it != Mytop.end();++it)
+        {
+
+            h_pt_top_ATS->Fill(it->Pt(),weight);
+            h_eta_top_ATS->Fill(it->Eta(),weight);
+            h_y_top_ATS->Fill(it->Rapidity(),weight);
+
+        }
+        for(vector<MyLepton>::iterator it = Myatop.begin(); it != Myatop.end();++it)
+        {
+            h_pt_atop_ATS->Fill(it->Pt(),weight);
+            h_eta_atop_ATS->Fill(it->Eta(),weight);
+            h_y_atop_ATS->Fill(it->Rapidity(),weight);
+
+
+        }
+        for(vector<MyLepton>::iterator it = MyW.begin(); it != MyW.end();++it)
+        {
+            h_pt_W_ATS->Fill(it->Pt(),weight);
+            h_eta_W_ATS->Fill(it->Eta(),weight);
+
+        }
+        for(vector<MyLepton>::iterator it = MyaW.begin(); it != MyaW.end();++it)
+        {
+            h_pt_aW_ATS->Fill(it->Pt(),weight);
+            h_eta_aW_ATS->Fill(it->Eta(),weight);
+
+        }
+        TLorentzVector tt;
+        tt = *(Mytop.begin()) + *(Myatop.begin());
+        h_m_tt_ATS->Fill(tt.M(),weight);
+        h_pt_tt_ATS->Fill(tt.Pt(),weight);
+        h_y_tt_ATS->Fill(tt.Rapidity(),weight);
+    }
+
     return kTRUE;
 }
 
@@ -381,6 +781,9 @@ void MyAnalysis::SlaveTerminate()
     // The SlaveTerminate() function is called after all entries or objects
     // have been processed. When running with PROOF SlaveTerminate() is called
     // on each slave server.
+    outFile->cd();
+    outTree->Write();
+    outFile->Close();
 
 }
 
@@ -398,13 +801,12 @@ void MyAnalysis::BuildEvents()
 {
    MyJets.clear();
     MyLeptons.clear();
-	vector<MyLepton> MyLeptonsD;
-    MyLeptonsD.clear();
+
     for(int i=0; i < (int) pt_Jets.GetSize(); ++i)
     {
         MyJet jet = MyJet(pt_Jets[i],eta_Jets[i],phi_Jets[i],e_Jets[i]);
         jet.SetJetSF(sf_down_Jets[i],sf_nominal_Jets[i],sf_up_Jets[i]);
-        jet.SetJetBDis(Loose_Bdiscriminator->at(i),Medium_Bdiscriminator->at(i),Tight_Bdiscriminator->at(i));
+        jet.SetJetBDis(bdis_Jets[i]);
         jet.SetJetHadFlav(hadflav_Jets[i]);
         double jet_scalefactor    = reader.eval_auto_bounds(
                     "central",
@@ -413,6 +815,8 @@ void MyAnalysis::BuildEvents()
                     pt_Jets[i]
                     );
         jet.SetJetBSF(jet_scalefactor);
+        jet.SetJetPtRes(ptresolution_Jets[i]);
+        jet.SetJetPhiRes(phiresolution_Jets[i]);
         if(!(pt_gen_Jets.IsEmpty())) jet.SetGenJet(pt_gen_Jets[i],eta_gen_Jets[i],phi_gen_Jets[i],e_gen_Jets[i]);
         MyJets.push_back(jet);
     }
@@ -423,22 +827,65 @@ void MyAnalysis::BuildEvents()
    
     
         MyLepton lep = MyLepton(pt_Leptons[j],eta_Leptons[j],phi_Leptons[j],e_Leptons[j]);
+        lep.SetCharge(charge_Leptons[j]);
+        lep.SetLepType("electron");
+        if(!SuperClusterEta_Leptons.IsEmpty()) lep.SetLepSCeta(SuperClusterEta_Leptons[j]);
         if(!(pt_gen_Leptons.IsEmpty())) lep.SetGenLep(pt_gen_Leptons[j],eta_gen_Leptons[j],phi_gen_Leptons[j],e_gen_Leptons[j]);
-        MyLeptonsD.push_back(lep);
+        if(!(pt_gen_daughters.IsEmpty())) lep.SetGenLepM(pt_gen_daughters[j],eta_gen_daughters[j],phi_gen_daughters[j],e_gen_daughters[j]);
+        if(!(pt_gen_mothers.IsEmpty())) lep.SetGenLepMM(pt_gen_mothers[j],eta_gen_mothers[j],phi_gen_mothers[j],e_gen_mothers[j]);
+        if(!(pt_gen_Leptons.IsEmpty()))lep.SetGenId(id_gen_Leptons[j]);
+        if(!(pt_gen_daughters.IsEmpty()))lep.SetGenLepDaughterId(id_gen_daughters[j]);
+        if(!(pt_gen_mothers.IsEmpty()))lep.SetGenLepMotherId(id_gen_mothers[j]);
+        MyLeptons.push_back(lep);
     }
-
-   for(int j=0; j< (int) MyLeptonsD.size();++j)
+    Mytop.clear();
+    Myatop.clear();
+    MyW.clear();
+    MyaW.clear();
+    Mynu.clear();
+    Myanu.clear();
+    for(int j=0; j< (int) pt_top.GetSize();++j)
     {
-		MyLeptonsD.at(j).SetLepSCeta(SuperClusterEta_Leptons[j]);
-        if(fabs(SuperClusterEta_Leptons[j]) <= 1.479){
-         if(!(d0_Leptons[j] < 0.05) && !(dz_Leptons[j] < 0.10) ) continue;
-        }
-
-       if(fabs(SuperClusterEta_Leptons[j]) > 1.479 ){
-        if(!(d0_Leptons[j] < 0.10) && !(dz_Leptons[j] < 0.20) ) continue;
-          }
-		MyLeptons.push_back(MyLeptonsD.at(j));
+        MyLepton lep = MyLepton(pt_top[j],eta_top[j],phi_top[j],e_top[j]);
+        Mytop.push_back(lep);
     }
+    for(int j=0; j< (int) pt_antitop.GetSize();++j)
+    {
+        MyLepton lep = MyLepton(pt_antitop[j],eta_antitop[j],phi_antitop[j],e_antitop[j]);
+        Myatop.push_back(lep);
+    }
+    for(int j=0; j< (int) pt_W.GetSize();++j)
+    {
+        MyLepton lep = MyLepton(pt_W[j],eta_W[j],phi_W[j],e_W[j]);
+        MyW.push_back(lep);
+    }
+    for(int j=0; j< (int) pt_antiW.GetSize();++j)
+    {
+        MyLepton lep = MyLepton(pt_antiW[j],eta_antiW[j],phi_antiW[j],e_antiW[j]);
+        MyaW.push_back(lep);
+    }
+    for(int j=0; j< (int) pt_nu.GetSize();++j)
+    {
+        MyLepton lep = MyLepton(pt_nu[j],eta_nu[j],phi_nu[j],e_nu[j]);
+        Mynu.push_back(lep);
+    }
+    for(int j=0; j< (int) pt_antinu.GetSize();++j)
+    {
+        MyLepton lep = MyLepton(pt_antinu[j],eta_antinu[j],phi_antinu[j],e_antinu[j]);
+        Myanu.push_back(lep);
+    }
+//   for(int j=0; j< (int) MyLeptonsD.size();++j)
+//    {
+//		MyLeptonsD.at(j).SetLepSCeta(SuperClusterEta_Leptons[j]);
+//        if(fabs(SuperClusterEta_Leptons[j]) <= 1.479){
+//         if(!(d0_Leptons[j] < 0.05) && !(dz_Leptons[j] < 0.10) ) continue;
+//        }
+
+//       if(fabs(SuperClusterEta_Leptons[j]) > 1.479 ){
+//        if(!(d0_Leptons[j] < 0.10) && !(dz_Leptons[j] < 0.20) ) continue;
+//          }
+//		MyLeptons.push_back(MyLeptonsD.at(j));
+//    }
 }
 
 void MyAnalysis::bEffCalc(double b_eta, double b_pt,vector<MyJet> jets)
@@ -448,8 +895,8 @@ void MyAnalysis::bEffCalc(double b_eta, double b_pt,vector<MyJet> jets)
     for(vector<MyJet>::iterator it = jets.begin(); it != jets.end();++it)
     {
 
-        if(it->GetHadFlav() == 5 && it->GetJetBDis(0))  h_btag_eff_num->Fill(b_pt,fabs(b_eta));
-        if(it->GetJetBDis(0)) h_btag_eff_den->Fill(b_pt,fabs(b_eta));
+        if(it->GetHadFlav() == 5 && (it->GetJetBDis() > 0.5426))  h_btag_eff_num->Fill(b_pt,fabs(b_eta));
+        if((it->GetHadFlav() == 5)) h_btag_eff_den->Fill(b_pt,fabs(b_eta));
 
     }
 

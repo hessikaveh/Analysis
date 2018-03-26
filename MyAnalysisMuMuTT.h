@@ -102,7 +102,7 @@ public :
    TTreeReaderValue<Int_t> PU_BunchCrossing = {fReader, "PU_BunchCrossing"};
    TTreeReaderValue<Int_t> num_PU_gen_vertices = {fReader, "num_PU_gen_vertices"};
    TTreeReaderValue<Int_t> num_PV = {fReader, "num_PV"};
-
+ TTreeReaderArray<double> bdis_Jets = {fReader, "bdis_Jets"};
 
     MyAnalysis(TTree * /*tree*/ =0,bool isData=0){b_isData = isData;}
     virtual ~MyAnalysis() { }
