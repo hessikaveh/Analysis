@@ -25,11 +25,13 @@
 //
 
 
-#include "MyAnalysisElMu.h"
+#include "MyAnalysisElMuRange.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TRandom.h>
 #include <TGraph.h>
+#include <ctime>
+
 
 void MyAnalysis::Begin(TTree * /*tree*/)
 {
@@ -63,7 +65,7 @@ void MyAnalysis::Begin(TTree * /*tree*/)
     h_Nevents_ABS->Sumw2();
     histograms.push_back(h_Nevents_ABS);
     histograms_MC.push_back(h_Nevents_ABS);
-
+    /////////////////PILE-UP///////////////////////////
     h_num_PV = new TH1F("h_num_PV","Number of Pileup vertices",50,0,50);
     h_num_PV->Sumw2();
     histograms.push_back(h_num_PV);
@@ -74,21 +76,66 @@ void MyAnalysis::Begin(TTree * /*tree*/)
     histograms.push_back(h_num_PV_weighted);
     histograms_MC.push_back(h_num_PV_weighted);
 
+    h_num_PV_weighted_up = new TH1F("h_num_PV_weighted_up","Number of Pileup vertices",50,0,50);
+    h_num_PV_weighted_up->Sumw2();
+    histograms.push_back(h_num_PV_weighted_up);
+    histograms_MC.push_back(h_num_PV_weighted_up);
+
+    h_num_PV_weighted_down = new TH1F("h_num_PV_weighted_down","Number of Pileup vertices",50,0,50);
+    h_num_PV_weighted_down->Sumw2();
+    histograms.push_back(h_num_PV_weighted_down);
+    histograms_MC.push_back(h_num_PV_weighted_down);
+
+    ///////////////////M(ll) ALS(no veto)/////////////////////////////
     h_m_dilepton_ALS_NoVeto = new TH1F("h_m_dilepton_ALS_NoVeto","Invariant mass of dilepton",50,0,300);
     h_m_dilepton_ALS_NoVeto->Sumw2();
     histograms.push_back(h_m_dilepton_ALS_NoVeto);
     histograms_MC.push_back(h_m_dilepton_ALS_NoVeto);
 
+    h_m_dilepton_ALS_NoVeto_up = new TH1F("h_m_dilepton_ALS_NoVeto_up","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_ALS_NoVeto_up->Sumw2();
+    histograms.push_back(h_m_dilepton_ALS_NoVeto_up);
+    histograms_MC.push_back(h_m_dilepton_ALS_NoVeto_up);
+
+    h_m_dilepton_ALS_NoVeto_down = new TH1F("h_m_dilepton_ALS_NoVeto_down","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_ALS_NoVeto_down->Sumw2();
+    histograms.push_back(h_m_dilepton_ALS_NoVeto_down);
+    histograms_MC.push_back(h_m_dilepton_ALS_NoVeto_down);
+
+    ///////////// M(ll) A1BS ////////////////
+    
     h_m_dilepton_A1BS = new TH1F("h_m_dilepton_A1BS","Invariant mass of dilepton",50,0,300);
     h_m_dilepton_A1BS->Sumw2();
     histograms.push_back(h_m_dilepton_A1BS);
     histograms_MC.push_back(h_m_dilepton_A1BS);
 
+    h_m_dilepton_A1BS_up = new TH1F("h_m_dilepton_A1BS_up","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_A1BS_up->Sumw2();
+    histograms.push_back(h_m_dilepton_A1BS_up);
+    histograms_MC.push_back(h_m_dilepton_A1BS_up);
+
+    h_m_dilepton_A1BS_down = new TH1F("h_m_dilepton_A1BS_down","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_A1BS_down->Sumw2();
+    histograms.push_back(h_m_dilepton_A1BS_down);
+    histograms_MC.push_back(h_m_dilepton_A1BS_down);
+
+    //////////// M(ll) A2BS //////////////////////
     h_m_dilepton_A2BS = new TH1F("h_m_dilepton_A2BS","Invariant mass of dilepton",50,0,300);
     h_m_dilepton_A2BS->Sumw2();
     histograms.push_back(h_m_dilepton_A2BS);
     histograms_MC.push_back(h_m_dilepton_A2BS);
 
+    h_m_dilepton_A2BS_up = new TH1F("h_m_dilepton_A2BS_up","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_A2BS_up->Sumw2();
+    histograms.push_back(h_m_dilepton_A2BS_up);
+    histograms_MC.push_back(h_m_dilepton_A2BS_up);
+
+    h_m_dilepton_A2BS_down = new TH1F("h_m_dilepton_A2BS_down","Invariant mass of dilepton",50,0,300);
+    h_m_dilepton_A2BS_down->Sumw2();
+    histograms.push_back(h_m_dilepton_A2BS_down);
+    histograms_MC.push_back(h_m_dilepton_A2BS_down);
+    
+    /////////////// #jets ALS(NoVeto) ////////////////////
     h_num_jets_ALS_NoVeto = new TH1F("h_num_jets_ALS_NoVeto","Number of Jets",9,0,9);
     h_num_jets_ALS_NoVeto->Sumw2();
     histograms.push_back(h_num_jets_ALS_NoVeto);
@@ -432,6 +479,19 @@ void MyAnalysis::Begin(TTree * /*tree*/)
     outTree->Branch("px_mets","vector<double>",&t_Met_px);
     outTree->Branch("py_mets","vector<double>",&t_Met_py);
     outTree->Branch("mc_weight",&mc_weight);
+    outTree->Branch("mc0_weight",&mc0_weight);
+    outTree->Branch("mc1_weight",&mc1_weight);
+    outTree->Branch("mc2_weight",&mc2_weight);
+    outTree->Branch("mc3_weight",&mc3_weight);
+    outTree->Branch("mc4_weight",&mc4_weight);
+    outTree->Branch("mc5_weight",&mc5_weight);
+    outTree->Branch("mc6_weight",&mc6_weight);
+    outTree->Branch("mc7_weight",&mc7_weight);
+    outTree->Branch("mc8_weight",&mc8_weight);
+    outTree->Branch("mc9_weight",&mc9_weight);
+    outTree->Branch("mc10_weight",&mc10_weight);
+    outTree->Branch("mc11_weight",&mc11_weight);
+    outTree->Branch("mc12_weight",&mc12_weight);
     outTree->Branch("pu_nom_weight",&pu_nom_weight);
     outTree->Branch("pu_up_weight",&pu_up_weight);
     outTree->Branch("pu_down_weight",&pu_down_weight);
@@ -510,8 +570,7 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/)
 
 Bool_t MyAnalysis::Process(Long64_t entry)
 {
-
-
+    clock_t begin = clock();
     // The Process() function is called for each entry in the tree (or possibly
     // keyed object in the case of PROOF) to be processed. The entry argument
     // specifies which entry in the currently loaded tree is to be processed.
@@ -529,16 +588,22 @@ Bool_t MyAnalysis::Process(Long64_t entry)
     // The return value is currently not used.
     ++TotalEvents;
     Long64_t nentries = fReader.GetEntries(true);
-
-    fReader.SetEntry(entry);
+    if(n_entry < n_start) n_entry = n_start;
+    if(n_end > nentries) n_end = nentries;
+   // cout << n_entry << " here " <<n_end << endl;
+    fReader.SetEntry(n_entry);
+    ++n_entry;
     weight = 1.;
-    if (TotalEvents % 1000 == 0)
-        cout << "Next event -----> " << TotalEvents << "/"<< nentries << endl;
-    //            if(TotalEvents > 100000) return kTRUE;
+    weight_up = 1.;
+    weight_down = 1.;
+    if(n_entry > n_end) return kTRUE;
 
+    if (n_entry % 1000 == 0)
+        cout << "Next event -----> " << n_entry << "/"<< nentries << endl;
     BuildEvents();
-
-
+    clock_t end = clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+     //  cout << "build event time: " << elapsed_secs << endl;
     met_pt =  *(px_mets.begin()) + *(py_mets.begin());
     met_pt =  *(pt_mets.begin());
     met_sum = *(pt_mets.begin());
@@ -546,7 +611,39 @@ Bool_t MyAnalysis::Process(Long64_t entry)
     // cout << b_isData << endl;
     mc_weight = 1.;
     mc_weight *= (*w_mc);
-    if(!b_isData)weight *= (*w_mc);
+    mc0_weight = 1.;
+    mc0_weight *= (*w_mc0);
+    mc1_weight = 1.;
+    mc1_weight *= (*w_mc1);
+    mc2_weight = 1.;
+    mc2_weight *= (*w_mc2);
+    mc3_weight = 1.;
+    mc3_weight *= (*w_mc3);
+    mc4_weight = 1.;
+    mc4_weight *= (*w_mc4);
+    mc5_weight = 1.;
+    mc5_weight *= (*w_mc5);
+    mc6_weight = 1.;
+    mc6_weight *= (*w_mc6);
+    mc7_weight = 1.;
+    mc7_weight *= (*w_mc7);
+    mc8_weight = 1.;
+    mc8_weight *= (*w_mc8);
+    mc9_weight = 1.;
+    mc9_weight *= (*w_mc9);
+    mc10_weight = 1.;
+    mc10_weight *= (*w_mc10);
+    mc11_weight = 1.;
+    mc11_weight *= (*w_mc11);
+    mc12_weight = 1.;
+    mc12_weight *= (*w_mc12);
+    
+    if(!b_isData)
+      {
+	weight *= (*w_mc);
+	weight_up *= (*w_mc);
+	weight_down *= (*w_mc);
+      }
     if(MyLeptons.size() < 2) return kTRUE;
     MyLepton lep1 = MyLeptons.at(0);
     MyLepton lep2 = MyLeptons.at(1);
@@ -631,11 +728,19 @@ Bool_t MyAnalysis::Process(Long64_t entry)
     
     if(m_dilepton < 20 ) cout << "cut why?!"<<endl;
     h_num_PV->Fill(*num_PV,weight);
-    if(!b_isData) weight *= t_PU_weight;
+    if(!b_isData)
+      {
+	weight *= t_PU_weight;
+	weight_up *= pu_up_weight;
+	weight_down *= pu_down_weight;
+	
+
+      }
    // cout << weight << "         " << mc_weight*pu_nom_weight << endl;
 
     h_num_PV_weighted->Fill(*num_PV,weight);
-
+    h_num_PV_weighted_up->Fill(*num_PV,weight_up);
+    h_num_PV_weighted_down->Fill(*num_PV,weight_down);
     if(!b_isData  && !b_GH){
 
         TH2F* h2D_muonIDSF = (TH2F*) f_muonIDSF->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio");
@@ -673,6 +778,8 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_down_weight *= id_down_weight*iso_down_weight*tk_down_weight;
 
             weight *= SF_posMu;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
         }
         if(lep1.GetLepType() == "electron")
         {
@@ -696,6 +803,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_down_weight *= id_down_weight*tk_down_weight;
            // cout << SF_posEl << " compared " << lepton_nom_weight << endl;
             weight *= SF_posEl;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
+
         }
 
 
@@ -727,6 +837,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_down_weight *= id_down_weight*iso_down_weight*tk_down_weight;
 
             weight *= SF_posMu;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
+
         }
         if(lep2.GetLepType() == "electron")
         {
@@ -749,6 +862,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_up_weight *= id_up_weight*tk_up_weight;
             lepton_down_weight *= id_down_weight*tk_down_weight;
             weight *= SF_posEl;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
+
         }
        // cout << weight << " the weight in cycle  " << lepton_nom_weight*pu_nom_weight*mc_weight << endl;
         if(b_em){
@@ -763,6 +879,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 //cout << trig_down_weight << "   " << trig_nom_weight << "  " << trig_up_weight<<endl;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
             if(lep2.Pt()>lep1.Pt()){
                 TH2F* h2D_em_sf = (TH2F*) f_em_sf->Get("scalefactor_eta2d_with_syst");
@@ -774,6 +893,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_up_weight *= d_em_sf + d_em_sferr;
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
         }
         if(b_ee){
@@ -788,6 +910,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 //cout << trig_down_weight << "   " << trig_nom_weight << "  " << trig_up_weight<<endl;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
             if(lep2.Pt()>lep1.Pt()){
                 TH2F* h2D_em_sf = (TH2F*) f_ee_sf->Get("scalefactor_eta2d_with_syst");
@@ -799,6 +924,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_up_weight *= d_em_sf + d_em_sferr;
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
         }
         if(b_mm){
@@ -813,6 +941,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 //cout << trig_down_weight << "   " << trig_nom_weight << "  " << trig_up_weight<<endl;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
             if(lep2.Pt()>lep1.Pt()){
                 TH2F* h2D_em_sf = (TH2F*) f_mm_sf->Get("scalefactor_eta2d_with_syst");
@@ -824,6 +955,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_up_weight *= d_em_sf + d_em_sferr;
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
         }
 
@@ -866,6 +1000,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_down_weight *= id_down_weight*iso_down_weight*tk_down_weight;
 
             weight *= SF_posMu;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
+
         }
         if(lep1.GetLepType() == "electron")
         {
@@ -888,6 +1025,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_up_weight *= id_up_weight*tk_up_weight;
             lepton_down_weight *= id_down_weight*tk_down_weight;
             weight *= SF_posEl;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
+
         }
 
 
@@ -919,6 +1059,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_down_weight *= id_down_weight*iso_down_weight*tk_down_weight;
 
             weight *= SF_posMu;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
+
         }
         if(lep2.GetLepType() == "electron")
         {
@@ -941,6 +1084,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
             lepton_up_weight *= id_up_weight*tk_up_weight;
             lepton_down_weight *= id_down_weight*tk_down_weight;
             weight *= SF_posEl;
+	    weight_up *=lepton_up_weight;
+	    weight_down *= lepton_down_weight;
+
         }
 
         if(b_ee){
@@ -955,6 +1101,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 //cout << trig_down_weight << "   " << trig_nom_weight << "  " << trig_up_weight<<endl;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
             if(lep2.Pt()>lep1.Pt()){
                 TH2F* h2D_em_sf = (TH2F*) f_ee_sf->Get("scalefactor_eta2d_with_syst");
@@ -966,6 +1115,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_up_weight *= d_em_sf + d_em_sferr;
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
         }
         if(b_mm){
@@ -980,6 +1132,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 //cout << trig_down_weight << "   " << trig_nom_weight << "  " << trig_up_weight<<endl;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
             if(lep2.Pt()>lep1.Pt()){
                 TH2F* h2D_em_sf = (TH2F*) f_mm_sf->Get("scalefactor_eta2d_with_syst");
@@ -991,6 +1146,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
                 trig_up_weight *= d_em_sf + d_em_sferr;
                 trig_down_weight *= d_em_sf - d_em_sferr;
                 weight *= d_em_sf;
+		weight_up *=trig_up_weight;
+		weight_down *= trig_down_weight;
+
             }
         }
 
@@ -998,7 +1156,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
 
     }
 
-
+    clock_t end2 = clock();
+   elapsed_secs = double(end2 - end) / CLOCKS_PER_SEC;
+      // cout << "lepton weights event time: " << elapsed_secs << endl;
     t_lepton_weight = weight;
     //if(!b_isData) weight *= (*w_trigger_ee) * (*w_trigger_em) *(*w_trigger_mm)*(*w_posEl)*(*w_negEl)*(*w_posMu)*(*w_negMu);
     h_m_dilepton_ALS_NoVeto->Fill(m_dilepton,weight);
@@ -1097,6 +1257,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
     }
     h_MET_sum_ALS->Fill(met_sum,weight);
     h_MET_ALS->Fill(met_pt,weight);
+    clock_t end3 = clock();
+   elapsed_secs = double(end3 - end2) / CLOCKS_PER_SEC;
+     //  cout << "before jets event time: " << elapsed_secs << endl;
     if(MyJets.size()<2) return kTRUE;
 
     double bweight=1.;
@@ -1157,7 +1320,12 @@ Bool_t MyAnalysis::Process(Long64_t entry)
 
         }
     }
-    if(!b_isData) weight*=bweight;
+    if(!b_isData)
+      {
+	weight*=bweight;
+	weight_up *= b_up_weight;
+	weight_down *= b_down_weight;
+      }
     h_MET_A1BS->Fill(met_pt,weight);
     h_num_bjets_A1BS->Fill(BJets.size(),weight);
     h_m_dilepton_A1BS->Fill((lep1+lep2).M(),weight);
@@ -1368,7 +1536,9 @@ Bool_t MyAnalysis::Process(Long64_t entry)
         h_y_tt_ATS->Fill(tt.Rapidity(),weight);
     }
 
-
+    clock_t end4 = clock();
+   elapsed_secs = double(end4 - begin) / CLOCKS_PER_SEC;
+       if(n_entry%1000 == 0)cout << "end event time: " << elapsed_secs << endl;
 
     return kTRUE;
 }

@@ -45,20 +45,20 @@ public :
     TTreeReaderValue<Int_t> Lumi = {fReader, "Lumi"};
     TTreeReaderValue<Int_t> Bunch = {fReader, "Bunch"};
     TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc0"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc1"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc2"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc3"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc4"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc5"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc6"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc7"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc8"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc9"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc10"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc11"};
-    TTreeReaderValue<Double_t> w_mc = {fReader, "w_mc12"};
 
+    TTreeReaderValue<Double_t> w_mc0 = {fReader, "w_mc0"};
+    TTreeReaderValue<Double_t> w_mc1 = {fReader, "w_mc1"};
+    TTreeReaderValue<Double_t> w_mc2 = {fReader, "w_mc2"};
+    TTreeReaderValue<Double_t> w_mc3 = {fReader, "w_mc3"};
+    TTreeReaderValue<Double_t> w_mc4 = {fReader, "w_mc4"};
+    TTreeReaderValue<Double_t> w_mc5 = {fReader, "w_mc5"};
+    TTreeReaderValue<Double_t> w_mc6 = {fReader, "w_mc6"};
+    TTreeReaderValue<Double_t> w_mc7 = {fReader, "w_mc7"};
+    TTreeReaderValue<Double_t> w_mc8 = {fReader, "w_mc8"};
+    TTreeReaderValue<Double_t> w_mc9 = {fReader, "w_mc9"};
+    TTreeReaderValue<Double_t> w_mc10 = {fReader, "w_mc10"};
+    TTreeReaderValue<Double_t> w_mc11 = {fReader, "w_mc11"};
+    TTreeReaderValue<Double_t> w_mc12 = {fReader, "w_mc12"};
 
     TTreeReaderValue<Double_t> w_trigger_ee = {fReader, "w_trigger_ee"};
     TTreeReaderValue<Double_t> w_trigger_em = {fReader, "w_trigger_em"};
@@ -158,8 +158,8 @@ public :
     TTreeReaderArray<double> e_antinu = {fReader, "e_antinu"};
 
 
-    MyAnalysis(TTree * /*tree*/ =0,bool isData=0,bool isGH=0,bool isEE=0,bool isMM=0,bool isEM=0,string outfilename="outfile"){
-        b_isData = isData;b_ee = isEE;b_GH=isGH;b_em=isEM;b_mm=isMM;filename=outfilename;}
+    MyAnalysis(TTree * /*tree*/ =0,bool isData=0,bool isGH=0,bool isEE=0,bool isMM=0,bool isEM=0,string outfilename="outfile",Long64_t nStart=0,Long64_t nEnd=0){
+        b_isData = isData;b_ee = isEE;b_GH=isGH;b_em=isEM;b_mm=isMM;filename=outfilename;n_start = nStart;n_end = nEnd;}
     virtual ~MyAnalysis() { }
     virtual Int_t   Version() const { return 2; }
     virtual void    Begin(TTree *tree);
@@ -181,7 +181,10 @@ public :
 
     //Defining Histograms
     int TotalEvents =0;
+    Long64_t n_entry = 0;
     double weight = 1;
+    double weight_up =1;
+    double weight_down = 1;
     vector<TH1F*> histograms;
     vector<TH1F*> histograms_MC;
     TH1F* h_Nevents;
@@ -258,6 +261,8 @@ public :
     string btagSf="CSVv2_Moriond17_B_H.csv";
     TFile* f_btagEff;
     bool b_isData;
+    Long64_t n_start;
+    Long64_t n_end;
     bool b_ee;
     bool b_em;
     bool b_mm;
@@ -373,6 +378,19 @@ edm::LumiReWeighting LumiWeights_;
        //Systematic variables
 		//MC weight
 		double mc_weight;
+        double mc0_weight;
+        double mc1_weight;
+        double mc2_weight;
+        double mc3_weight;
+        double mc4_weight;
+        double mc5_weight;
+        double mc6_weight;
+        double mc7_weight;
+        double mc8_weight;
+	double mc9_weight;
+	double mc10_weight;
+	double mc11_weight;
+	double mc12_weight;
         //Trigger
         double trig_nom_weight;
         double trig_up_weight;
